@@ -1,0 +1,132 @@
+title: 4 programming languages you should learn
+tagline: Take a tour of 4 popular programming languages and decide what you'll learn.
+description: >-
+  Getting started in programming can be overwhelming. What should you build
+  first? Which programming language should you use? This course will help you
+  take these important first steps.
+template:
+  repo: hello-world-4-languages-template
+  name: hello-world-4-languages
+  description: Say Hello World! in 4 different programming languages
+before:
+  - type: createIssue
+    title: Start Here! Introduction to programming languages
+    body: welcome-issue.md
+  - type: createPullRequest
+    title: Say Hello World with HTML
+    body: 01-html-intro.md
+    head: add-html
+    action_id: html_pr
+  - type: createPullRequest
+    title: Say Hello World with Javascript
+    body: 01-javascript-intro.md
+    head: add-javascript
+    action_id: javascript_pr
+  - type: createPullRequest
+    title: Say Hello World with Python
+    body: 01-python-intro.md
+    head: add-python
+    action_id: python_pr
+  - type: createPullRequest
+    title: Say Hello World with Ruby
+    body: 01-ruby-intro.md
+    head: add-ruby
+    action_id: ruby_pr
+  - type: closeIssue
+    issue: '2'
+  - type: closeIssue
+    issue: '3'
+  - type: closeIssue
+    issue: '4'
+  - type: closeIssue
+    issue: '5'
+steps:
+  - title: What should you learn first?
+    description: >-
+      Learn about the role of programming languages and how they are used in
+      real projects
+    event: issues.closed
+    link: '{{ repoUrl }}/issues/1'
+    actions:
+      - type: octokit
+        method: issues.update
+        owner: '%actions.html_pr.data.head.repo.owner.login%'
+        repo: '%actions.html_pr.data.head.repo.name%'
+        number: '%actions.html_pr.data.number%'
+        state: open
+      - type: respond
+        with: 02-go-to-html.md
+        data:
+          url: "%actions.html_pr.data.html_url%"
+  - title: Say Hello World! with HTML
+    description: Most people learn HTML first. Find out why ...
+    event: pull_request.closed
+    link: '{{ repoUrl }}/pull/2'
+    actions:
+      - type: gate
+        left: '%payload.pull_request.merged%'
+        else:
+          - type: respond
+            with: reopen.md
+      - type: octokit
+        method: issues.update
+        owner: '%actions.javascript_pr.data.head.repo.owner.login%'
+        repo: '%actions.javascript_pr.data.head.repo.name%'
+        number: '%actions.javascript_pr.data.number%'
+        state: open
+      - type: respond
+        with: 02-go-to-javascript.md
+        data:
+          url: "%actions.javascript_pr.data.html_url%"
+  - title: Say Hello World! with Javascript
+    description: Kick it up a notch with this common language
+    event: pull_request.closed
+    link: '{{ repoUrl }}/pull/3'
+    actions:
+      - type: gate
+        left: '%payload.pull_request.merged%'
+        else:
+          - type: respond
+            with: reopen.md
+      - type: octokit
+        method: issues.update
+        owner: '%actions.python_pr.data.head.repo.owner.login%'
+        repo: '%actions.python_pr.data.head.repo.name%'
+        number: '%actions.python_pr.data.number%'
+        state: open
+      - type: respond
+        with: 02-go-to-python.md
+        data:
+          url: "%actions.python_pr.data.html_url%"
+  - title: Say Hello World! with Python
+    description: If data is your thing, you'll want to learn some python
+    event: pull_request.closed
+    link: '{{ repoUrl }}/pull/4'
+    actions:
+      - type: gate
+        left: '%payload.pull_request.merged%'
+        else:
+          - type: respond
+            with: reopen.md
+      - type: octokit
+        method: issues.update
+        owner: '%actions.ruby_pr.data.head.repo.owner.login%'
+        repo: '%actions.ruby_pr.data.head.repo.name%'
+        number: '%actions.ruby_pr.data.number%'
+        state: open
+      - type: respond
+        with: 02-go-to-ruby.md
+        data:
+          url: "%actions.ruby_pr.data.html_url%"
+  - title: Say Hello World! with Ruby
+    description: There are many different flavors ... check out Ruby
+    event: pull_request.closed
+    link: '{{ repoUrl }}/pull/5'
+    actions:
+      - type: gate
+        left: '%payload.pull_request.merged%'
+        else:
+          - type: respond
+            with: reopen.md
+      - type: respond
+        with: 03-all-done.md
